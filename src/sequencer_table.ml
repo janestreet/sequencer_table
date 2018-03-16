@@ -191,7 +191,7 @@ let%test_module _ =
           List.chunks_of ~length:num_keys (Queue.to_list started_jobs)
         in
         List.iter started_jobs_in_batched ~f:(fun l ->
-          assert (List.sort l ~cmp:Int.compare = keys)
+          assert (List.sort l ~compare:Int.compare = keys)
         );
       )
     ;;
