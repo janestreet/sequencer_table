@@ -2,7 +2,6 @@
  ((name sequencer_table)
   (public_name sequencer_table)
   (preprocess (pps (ppx_jane -check-doc-comments ppxlib.runner)))
-  (flags (:standard -safe-string))
   (libraries (async))))
 
 
