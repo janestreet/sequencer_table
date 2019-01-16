@@ -115,7 +115,7 @@ let%test_module _ =
   (module struct
     module T = Make(Int)
 
-    let (=) = Pervasives.(=)
+    let (=) = Poly.(=)
 
     exception Abort of int
 
