@@ -15,7 +15,7 @@ module Make (Key : Hashable) = struct
   module Job = struct
     type ('state, 'job_tag) t =
       { tag : 'job_tag Tag.t
-      ; run : ('state option -> unit Deferred.t) sexp_opaque
+      ; run : ('state option -> unit Deferred.t) 
       }
 
     let sexp_of_t _ sexp_of_job_tag t = t.tag |> [%sexp_of: job_tag Tag.t]
