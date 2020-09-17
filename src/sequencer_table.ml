@@ -4,7 +4,7 @@ open! Import
 
 let debug_on_find_state = ref ignore
 
-module Make (Key : Hashable) = struct
+module Make (Key : Hashable.S_plain) = struct
   module Tag = struct
     type 'job_tag t =
       | User_job of 'job_tag option
@@ -15,7 +15,7 @@ module Make (Key : Hashable) = struct
   module Job = struct
     type ('state, 'job_tag) t =
       { tag : 'job_tag Tag.t
-      ; run : ('state option -> unit Deferred.t) 
+      ; run : ('state option -> unit Deferred.t)
       }
 
     let sexp_of_t _ sexp_of_job_tag t = t.tag |> [%sexp_of: job_tag Tag.t]

@@ -35,7 +35,7 @@ open! Core
 open! Async
 open! Import
 
-module Make (Key : Hashable) : sig
+module Make (Key : Hashable.S_plain) : sig
 
   (** Every [Key.t] in the table has an associated [state], which each job running on that
       key gets access to.  Jobs maybe have an associated [job_tag] which is provided
