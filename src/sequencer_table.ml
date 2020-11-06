@@ -59,7 +59,7 @@ module Make (Key : Hashable.S_plain) = struct
       (* when job is called, [f] is invoked immediately, there shall be no deferred in
          between *)
       let run state_opt =
-        Monitor.try_with ~run:`Now (fun () -> f state_opt) >>| Ivar.fill ivar
+        Monitor.try_with ~rest:(`Log)  ~run:`Now (fun () -> f state_opt) >>| Ivar.fill ivar
       in
       let job = { Job. tag = Tag.User_job tag; run } in
       match Hashtbl.find t.jobs key with
@@ -155,7 +155,7 @@ let%test_module _ =
         let keys = List.init num_keys ~f:Fn.id in
         let started_jobs = Queue.create () in
         let enqueue key x =
-          Monitor.try_with (fun () ->
+          Monitor.try_with ~run:(`Schedule)  ~rest:(`Log)  (fun () ->
             T.enqueue t ~key (fun state ->
               let state =
                 match state with
