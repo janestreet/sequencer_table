@@ -32,11 +32,12 @@
     ~key None]. *)
 
 open! Core
-open! Async
+open! Async_kernel
 open! Import
 
-module Make (Key : Hashable.S_plain) : sig
-
+module Make (Key : sig
+    type t [@@deriving sexp_of, hash, compare]
+  end) : sig
   (** Every [Key.t] in the table has an associated [state], which each job running on that
       key gets access to.  Jobs maybe have an associated [job_tag] which is provided
       purely to assist debugging, as the tag is included in the sexp serialization of
@@ -85,5 +86,8 @@ module Make (Key : Hashable.S_plain) : sig
       implementation adds a new job to every key currently with at least one running job
       attached, so it will affect [num_unfinished_jobs] *)
   val prior_jobs_done : (_, _) t -> unit Deferred.t
+end
 
+module For_testing : sig
+  val debug_on_find_state : (unit -> unit) ref [@@alert for_sequencer_table_tests_only]
 end
