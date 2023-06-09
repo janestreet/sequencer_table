@@ -65,7 +65,7 @@ struct
           ~rest:`Log
           ~run:`Now
           (fun () -> f state_opt)
-        >>| Ivar.fill ivar
+        >>| Ivar.fill_exn ivar
       in
       let job = { Job.tag = Tag.User_job tag; run } in
       match Hashtbl.find t.jobs key with
@@ -110,7 +110,7 @@ struct
             { tag = Tag.Prior_jobs_done
             ; run =
                 (fun _ ->
-                   Ivar.fill ivar ();
+                   Ivar.fill_exn ivar ();
                    Deferred.unit)
             })
       in
