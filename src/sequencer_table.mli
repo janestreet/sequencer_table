@@ -82,6 +82,8 @@ module Make (Key : sig
       or [set_state]) when folding *)
   val fold : ('state, _) t -> init:'b -> f:('b -> key:Key.t -> 'state option -> 'b) -> 'b
 
+  val exists : ('state, _) t -> f:(Key.t -> 'state option -> bool) -> bool
+
   (** The result is determined when all jobs enqueued before this are finished.  The
       implementation adds a new job to every key currently with at least one running job
       attached, so it will affect [num_unfinished_jobs] *)

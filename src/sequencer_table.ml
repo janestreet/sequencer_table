@@ -31,7 +31,7 @@ struct
        need to remove the table entry for an emptied throttle. *)
     ; jobs : (Key.t, ('state, 'job_tag) Job.t Queue.t) Hashtbl.t
     }
-  [@@deriving sexp_of, fields]
+  [@@deriving sexp_of]
 
   let create () =
     { states = Hashtbl.create (module Key); jobs = Hashtbl.create (module Key) }
@@ -91,14 +91,22 @@ struct
 
   let mem t key = Hashtbl.mem t.states key || Hashtbl.mem t.jobs key
 
-  let fold t ~init ~f =
+  let all_keys t =
     let all_keys =
       Hash_set.create (module Key) ~size:(Hashtbl.length t.jobs + Hashtbl.length t.states)
     in
     Hashtbl.iteri t.jobs ~f:(fun ~key ~data:_ -> Hash_set.add all_keys key);
     Hashtbl.iteri t.states ~f:(fun ~key ~data:_ -> Hash_set.add all_keys key);
-    Hash_set.fold all_keys ~init ~f:(fun acc key ->
+    all_keys
+  ;;
+
+  let fold t ~init ~f =
+    Hash_set.fold (all_keys t) ~init ~f:(fun acc key ->
       f acc ~key (Hashtbl.find t.states key))
+  ;;
+
+  let exists t ~f =
+    Hash_set.exists (all_keys t) ~f:(fun key -> f key (Hashtbl.find t.states key))
   ;;
 
   let prior_jobs_done t =
