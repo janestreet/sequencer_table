@@ -5,8 +5,8 @@ open! Import
 let debug_on_find_state = ref ignore
 
 module Make (Key : sig
-    type t [@@deriving sexp_of, hash, compare]
-  end) =
+  type t [@@deriving sexp_of, hash, compare]
+end) =
 struct
   module Tag = struct
     type 'job_tag t =
@@ -26,7 +26,7 @@ struct
 
   type ('state, 'job_tag) t =
     { states : (Key.t, 'state) Hashtbl.t
-    (* We use a [Queue.t] and implement the [Throttle.Sequencer] functionality ourselves,
+        (* We use a [Queue.t] and implement the [Throttle.Sequencer] functionality ourselves,
        because throttles don't provide a way to get notified when they are empty, and we
        need to remove the table entry for an emptied throttle. *)
     ; jobs : (Key.t, ('state, 'job_tag) Job.t Queue.t) Hashtbl.t
@@ -61,10 +61,7 @@ struct
       (* when job is called, [f] is invoked immediately, there shall be no deferred in
          between *)
       let run state_opt =
-        Monitor.try_with
-          ~rest:`Log
-          ~run:`Now
-          (fun () -> f state_opt)
+        Monitor.try_with ~rest:`Log ~run:`Now (fun () -> f state_opt)
         >>| Ivar.fill_exn ivar
       in
       let job = { Job.tag = Tag.User_job tag; run } in
@@ -118,8 +115,8 @@ struct
             { tag = Tag.Prior_jobs_done
             ; run =
                 (fun _ ->
-                   Ivar.fill_exn ivar ();
-                   Deferred.unit)
+                  Ivar.fill_exn ivar ();
+                  Deferred.unit)
             })
       in
       this_key_done :: acc)
