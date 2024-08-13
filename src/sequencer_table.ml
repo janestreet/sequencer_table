@@ -5,8 +5,8 @@ open! Import
 let debug_on_find_state = ref ignore
 
 module Make (Key : sig
-  type t [@@deriving sexp_of, hash, compare]
-end) =
+    type t [@@deriving sexp_of, hash, compare]
+  end) =
 struct
   module Tag = struct
     type 'job_tag t =

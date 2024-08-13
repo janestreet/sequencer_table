@@ -36,8 +36,8 @@ open! Async_kernel
 open! Import
 
 module Make (Key : sig
-  type t [@@deriving sexp_of, hash, compare]
-end) : sig
+    type t [@@deriving sexp_of, hash, compare]
+  end) : sig
   (** Every [Key.t] in the table has an associated [state], which each job running on that
       key gets access to.  Jobs maybe have an associated [job_tag] which is provided
       purely to assist debugging, as the tag is included in the sexp serialization of
