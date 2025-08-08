@@ -4,8 +4,9 @@ open! Import
 
 let debug_on_find_state = ref ignore
 
-module Make (Key : sig
-    type t [@@deriving sexp_of, hash, compare]
+module%template
+  [@mode m = (global, local)] Make (Key : sig
+    type t [@@deriving sexp_of, hash, (compare [@mode m])]
   end) =
 struct
   module Tag = struct

@@ -35,8 +35,9 @@ open! Core
 open! Async_kernel
 open! Import
 
-module Make (Key : sig
-    type t [@@deriving sexp_of, hash, compare]
+module%template
+  [@mode m = (global, local)] Make (Key : sig
+    type t [@@deriving sexp_of, hash, (compare [@mode m])]
   end) : sig
   (** Every [Key.t] in the table has an associated [state], which each job running on that
       key gets access to. Jobs maybe have an associated [job_tag] which is provided purely
