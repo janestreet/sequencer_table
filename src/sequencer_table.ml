@@ -88,6 +88,7 @@ struct
   ;;
 
   let mem t key = Hashtbl.mem t.states key || Hashtbl.mem t.jobs key
+  let num_keys t = Hashtbl.length t.states
 
   let all_keys t =
     let all_keys =
