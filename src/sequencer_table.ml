@@ -27,9 +27,9 @@ struct
 
   type ('state, 'job_tag) t =
     { states : (Key.t, 'state) Hashtbl.t
-        (* We use a [Queue.t] and implement the [Throttle.Sequencer] functionality ourselves,
-       because throttles don't provide a way to get notified when they are empty, and we
-       need to remove the table entry for an emptied throttle. *)
+        (* We use a [Queue.t] and implement the [Throttle.Sequencer] functionality
+           ourselves, because throttles don't provide a way to get notified when they are
+           empty, and we need to remove the table entry for an emptied throttle. *)
     ; jobs : (Key.t, ('state, 'job_tag) Job.t Queue.t) Hashtbl.t
     }
   [@@deriving sexp_of]
