@@ -75,8 +75,11 @@ module%template
       pending and running. *)
   val num_unfinished_jobs : _ t -> Key.t -> int
 
-  (** [mem t key] returns [true] if there is state or an pending/running job *)
+  (** [mem t key] returns [true] if there is state or a pending/running job *)
   val mem : _ t -> Key.t -> bool
+
+  (** Returns number of keys in the table *)
+  val num_keys : _ t -> int
 
   (** Fold over keys with states or pending/running jobs. It's safe to mutate ([enqueue]
       or [set_state]) when folding *)
